@@ -120,7 +120,7 @@ func serve(client net.Conn, pr Log, certificate tls.Certificate) error {
 	// add support for socks5 proxy
 	dialer, err := proxy.SOCKS5("tcp", "127.0.0.1:9050", nil, nil)
 	if err != nil {
-    	log.Fatal(err)
+    	return errors.Wrap(err, "failed to connect to proxu")
 	}
 	server, err := dialer.Dial("tcp", *flServer)
 	if err != nil {
