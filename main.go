@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
-	"golang.org/x/net/proxy"
+	p "golang.org/x/net/proxy"
 
 	"github.com/orivej/e"
 	"github.com/pkg/errors"
@@ -50,6 +50,8 @@ var (
 )
 
 func main() {
+	var localhostCert string
+	var localhostKey string
 	flag.Parse()
 
 	certificate, err := tls.X509KeyPair([]byte(localhostCert), []byte(localhostKey))
@@ -118,7 +120,7 @@ func logName(idx int) string {
 
 func serve(client net.Conn, pr Log, certificate tls.Certificate) error {
 	// add support for socks5 proxy
-	dialer, err := proxy.SOCKS5("tcp", "127.0.0.1:9050", nil, nil)
+	dialer, err := p.SOCKS5("tcp", "127.0.0.1:9050", nil, nil)
 	if err != nil {
     	return errors.Wrap(err, "failed to connect to proxu")
 	}
